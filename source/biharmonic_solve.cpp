@@ -7,5 +7,6 @@ void biharmonic_solve(
   Eigen::MatrixXd & D)
 {
   // REPLACE WITH YOUR CODE
-  D = Eigen::MatrixXd::Zero(data.n,3);
+  // D = Eigen::MatrixXd::Zero(data.n,3);
+  igl::min_quad_with_fixed_solve(data, Eigen::VectorXd::Zero(data.n), bc, Eigen::VectorXd(), D);
 }

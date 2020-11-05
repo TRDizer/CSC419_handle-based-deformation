@@ -11,5 +11,15 @@ void biharmonic_precompute(
   igl::min_quad_with_fixed_data<double> & data)
 {
   // REPLACE WITH YOUR CODE
-  data.n = V.rows();
+  // data.n = V.rows();
+
+  Eigen::SparseMatrix<double> lapacian;
+  igl::cotmatrix(V, F, lapacian);
+
+  Eigen::SparseMatrix<double> mass, mass_inv, Q;
+  igl::massmatrix(V, F, igl::MASSMATRIX_TYPE_BARYCENTRIC, mass);
+  igl::invert_diag(mass, mass_inv);
+  Q = lapacian.transpose() * mass_inv * lapacian;
+
+  igl::min_quad_with_fixed_precompute(Q, b, Eigen::SparseMatrix<double>(), false, data);
 }
